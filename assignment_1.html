@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ASGMT_NAME}}</title>
+    <style>
+        .question {
+            font-size: 24px;
+        }
+        .answer button {
+            padding: 5px;
+            width: 50px;
+            background-color: black;
+            color: aliceblue;
+            border: 2px solid aliceblue;
+            position: relative;
+            left: 95%;
+            top: 45px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .answer button:active {
+            background-color: cadetblue;
+            border-color: black;
+        }
+        pre {
+            background-color: black;
+            color: aliceblue;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class='question'>WAP to read, display, add and subtract two complex numbers. (solve it using structure and pointer)</div><div class='answer'><button>copy</button><pre>/*
+WAP to read, display, add and subtract two complex numbers. (solve it using structure and pointer)
+*/
+
+#include &lt;stdio.h&gt;
+
+typedef struct {
+    int real, img;
+} complexNum;
+
+complexNum add(complexNum *x, complexNum *y) {
+    complexNum res;
+    res.real = x-&gt;real + y-&gt;real;
+    res.img = x-&gt;img + y-&gt;img;
+    return res;
+}
+
+complexNum subtract(complexNum *x, complexNum *y) {
+    complexNum res;
+    res.real = x-&gt;real - y-&gt;real;
+    res.img = x-&gt;img - y-&gt;img;
+    return res;
+}
+
+void main() {
+    complexNum x, y, a, s;
+    printf("a + bi\nEnter value of a and b for 1st complex number: ");
+    scanf("%d%d", &x.real, &x.img);
+    printf("Enter value of a and b for 2nd complex number: ");
+    scanf("%d%d", &y.real, &y.img);
+    int z;
+    printf("Press 1 to add the numbers\nPress 2 to subtract the numbers\nYour input: ");
+    scanf("%d", &z);
+    if (z == 1) {
+        a = add(&x, &y);
+        printf("(%d + %di) + (%d + %di) = (%d + %di)\n", x.real, x.img, y.real, y.img, a.real, a.img);
+    } else if (z == 2) {
+        s = subtract(&x, &y);
+        printf("(%d + %di) - (%d + %di) = (%d + %di)", x.real, x.img, y.real, y.img, s.real, s.img);
+    } else {
+        printf("Invalid operator");
+    }
+}</pre></div><div class='question'>Define a structure to store the name, an array mark [] which stores the marks of three different subjects, and a character grade. Write a program to display the details of the student whose name is entered by the user. Use the structure definition of the first question to make an array of students. Display the name of the students who have secured less than 40% of the aggregate.</div><div class='answer'><button>copy</button><pre>/*
+Define a structure to store the name, an array mark [] which stores the marks of three different subjects, and a character grade. 
+Use the structure definition of the first question to make an array of students. 
+Write a program to display the details of the student whose name is entered by the user. 
+Display the name of the students who have secured less than 40% of the aggregate.
+*/
+
+#include &lt;stdio.h&gt;
+
+typedef struct {
+    char name[32];
+    int mark[3];
+    char grade;
+} student;
+
+void main() {
+    int n;
+    printf("Number of student: ");
+    scanf("%d", &n);
+    student stu_details[n];
+    for (int i = 0;i&lt;n;i++) {
+        printf("\n\nEnter the name of the student: ");
+        scanf("%s", &stu_details[i].name);
+        printf("Enter the marks in format maths science english: ");
+        scanf("%d%d%d", &stu_details[i].mark[0], &stu_details[i].mark[1], &stu_details[i].mark[2]);
+        int total_marks = stu_details[i].mark[0] + stu_details[i].mark[1] + stu_details[i].mark[2];
+        float per = (total_marks*100)/300.0;
+        if (per &gt;= 90) {
+            stu_details[i].grade = 'a';
+        } else if (per &gt;= 70) {
+            stu_details[i].grade = 'b';
+        } else if (per &gt;= 60) {
+            stu_details[i].grade = 'c';
+        } else if (per &gt;= 40) {
+            stu_details[i].grade = 'd';
+        } else {
+            stu_details[i].grade = 'f';
+        }
+    }
+    while (1) {
+        int z;
+        printf("\n\npress 1 for Searching student data\npress 2 for displaying student who failed\npress any other key exit\nYour input: ");
+        scanf("%d", &z);
+        if (z == 1) {
+            char sn[32];
+            printf("\n\nEnter name of the student to search for: ");
+            scanf("%s", &sn);
+            for (int i = 0;i&lt;n;i++) {
+                int len = 0, flag = 1;
+                while (stu_details[i].name[len]!='\0' && sn[len]!='\0') {
+                    if (stu_details[i].name[len] == sn[len]) {
+                        flag = 1;
+                    } else {
+                        flag = 0;
+                        break;
+                    }
+
+                    len++;
+                }
+                if (flag) {
+                    printf("\nName: %s\nMarks in Math Science English: %d %d %d\nGrade: %c", stu_details[i].name, stu_details[i].mark[0], stu_details[i].mark[1], stu_details[i].mark[2], stu_details[i].grade);
+                    break;
+                }
+            }
+        } else if (z == 2) {
+            for (int i = 0;i&lt;n;i++) {
+                int mark_1 = stu_details[i].mark[0];
+                int mark_2 = stu_details[i].mark[1];
+                int mark_3 = stu_details[i].mark[2];
+                if (mark_1+mark_2+mark_3&lt;120) {
+                    printf("\nName: %s\nMarks in Math Science English: %d %d %d\nGrade: %c", stu_details[i].name, stu_details[i].mark[0], stu_details[i].mark[1], stu_details[i].mark[2], stu_details[i].grade);
+                }
+            }
+        } else {
+            break;
+        }
+    }
+}</pre></div><div class='question'>Declare a structure fraction that has two fields-numerator and denominator. Create two variables and compare them using function. Return 0 if the two fractions are equal, -1 if the first fraction is less than the second, and 1 otherwise. You may convert a fraction into a floating point number for your convenience.</div><div class='answer'><button>copy</button><pre>/*
+Declare a structure fraction that has two fields— numerator and denominator. 
+Create two variables and compare them using function. 
+Return 0 if the two fractions are equal, –1 if the first fraction is less than the second, and 1 otherwise. 
+You may convert a fraction into a floating point number for your convenience.
+*/
+#include &lt;stdio.h&gt;
+
+typedef struct {
+    int n, d;
+} div;
+
+int compare(div a, div b) {
+    float n1 = a.n/(a.d+0.0), n2 = b.n/(b.d+0.0);
+    if (n1 == n2) {
+        return 0;
+    } else if (n1&lt;n2) {
+        return -1;
+    } else {
+        return 1;
+    }
+}
+
+void main() {
+    div a, b;
+    printf("Enter the first numerator and denominator: ");
+    scanf("%d%d", &a.n, &a.d);
+    printf("Enter the second numerator and denominator: ");
+    scanf("%d%d", &b.n, &b.d);
+    int z = compare(a, b);
+    if (z == 0) {
+        printf("both are equal");
+    } else if (z == -1) {
+        printf("1st is smaller");
+    } else if (z == 1) {
+        printf("1st is greater");
+    }
+}</pre></div>
+<script>
+    var btn = document.getElementsByTagName('button');
+    for (var i = 0;i<btn.length;i++) {
+        btn[i].addEventListener('click', function () {
+            navigator.clipboard.writeText(this.nextElementSibling.textContent);
+            alert('copied');
+        })
+    }
+</script>
+</body>
+</html>
