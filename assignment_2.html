@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ASGMT_NAME}}</title>
+    <style>
+        .question {
+            font-size: 24px;
+        }
+        .answer button {
+            padding: 5px;
+            width: 50px;
+            background-color: black;
+            color: aliceblue;
+            border: 2px solid aliceblue;
+            position: relative;
+            left: 95%;
+            top: 45px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .answer button:active {
+            background-color: cadetblue;
+            border-color: black;
+        }
+        pre {
+            background-color: black;
+            color: aliceblue;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class='question'>WAP to arrange the elements of an array such that all even numbers are followed by all</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void main() {
+    int n;
+    printf("Enter the length of array: ");
+    scanf("%d", &n);
+    printf("Enter the elements of array: ");
+    int arr[n];
+    for (int i = 0;i&lt;n;i++) {
+        scanf("%d", &arr[i]);
+    }
+    for (int i = 0;i&lt;n;i++) {
+        if (arr[i]%2 != 0) {
+            for (int j = i+1;j&lt;n;j++) {
+                if (arr[j]%2 == 0) {
+                    swap(&arr[i], &arr[j]);
+                    break;
+                }
+            } 
+        }
+    }
+    for (int i = 0;i&lt;n;i++) {
+        printf("%d ", arr[i]);
+    }
+}</pre></div><div class='question'>Write a program to replace every element in the array with the next greatest element present in the same array.</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+
+void main() {
+    int n;
+    printf("Enter the length of array: ");
+    scanf("%d", &n);
+    printf("Enter the elements of array: ");
+    int arr[n];
+    for (int i = 0;i&lt;n;i++) {
+        scanf("%d", &arr[i]);
+    }
+    for (int i = 0;i&lt;n;i++) {
+        for (int j = i+1;j&lt;n;j++) {
+            if (arr[i]&lt;arr[j]) {
+                arr[i] = arr[j];
+                break;
+            }
+        }
+    }
+    for (int i = 0;i&lt;n;i++) {
+        printf("%d ", arr[i]);
+    }
+}</pre></div><div class='question'>WAP to find the largest number and count the occurrence of the largest number in an array of n integers using a single loop.</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+
+void main() {
+    int n, c = 1, m;
+    printf("Enter the length of array: ");
+    scanf("%d", &n);
+    printf("Enter the elements of array: ");
+    int arr[n];
+    for (int i = 0;i&lt;n;i++) {
+        scanf("%d", &arr[i]);
+    }
+    m = arr[0];
+    for (int i = 1;i&lt;n;i++) {
+        if (arr[i]&gt;m) {
+            m = arr[i];
+            c = 0;
+        }
+        if (arr[i] == m) {
+            c++;
+        }
+    }
+    printf("Largest element is %d and occurs %d times", m, c);
+}</pre></div><div class='question'>You are given array of 0's and 1's in random order. Segregate 0's on the lefy side and 1's in the right side of the array. Traverse array only once.</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void main() {
+    int n;
+    printf("Enter the length of array: ");
+    scanf("%d", &n);
+    printf("Enter the elements of array: ");
+    int arr[n];
+    for (int i = 0;i&lt;n;i++) {
+        scanf("%d", &arr[i]);
+    }
+    for (int i = 0, j = n-1;i&lt;j;) {
+        if (arr[i] == 1) {
+            if (arr[j] == 0) {
+                swap(&arr[i], &arr[j]);
+            }
+            j--;
+        } else {
+            i++;
+        }
+    }
+    for (int i = 0;i&lt;n;i++) {
+        printf("%d ", arr[i]);
+    }
+}</pre></div><div class='question'>WAP to find out the smallest and largest element stored in an array of integers.</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+void main() {
+    int n, max = INT_MIN;
+    printf("Enter the length of array: ");
+    scanf("%d", &n);
+    printf("Enter the elements of array: ");
+    int arr[n];
+    for (int i = 0;i&lt;n;i++) {
+        scanf("%d", &arr[i]);
+        if ()
+    }
+    printf("Largest: %d\nSmallest: %d", arr[0], arr[n-1]);
+}</pre></div><div class='question'>WAP to reverse the contents of an array of n elements.</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+
+void reverse(int n, int *arr) {
+    for (int i = 0;i&lt;(n/2);i++) {
+        int temp = *(arr+i);
+        *(arr+i) = *(arr+n-i-1);
+        *(arr+n-i-1) = temp;
+    }
+}
+
+void main() {
+    int n;
+    printf("Enter the length of array: ");
+    scanf("%d", &n);
+    printf("Enter the elements of array: ");
+    int arr[n];
+    for (int i = 0;i&lt;n;i++) {
+        scanf("%d", &arr[i]);
+    }
+    reverse(n, arr);
+    for (int i = 0;i&lt;n;i++) {
+        printf("%d ", arr[i]);
+    }
+}</pre></div><div class='question'>Given an unsorted array of size n, WAP to find the number of elements between two elements a and b (both inclusive).</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+
+void main() {
+    int n;
+    printf("Enter the length of array: ");
+    scanf("%d", &n);
+    printf("Enter the elements of array: ");
+    int arr[n];
+    for (int i = 0;i&lt;n;i++) {
+        scanf("%d", &arr[i]);
+    }
+    int a, b, c = 0;
+    printf("Enter the value of a and b: ");
+    scanf("%d%d", &a, &b);
+    int flag_1 = 0, flag_2 = 0;
+    for (int i = 0;i&lt;n;i++) {
+        if (arr[i]&gt;=a && arr[i]&lt;=b) {
+            c++;
+        }
+        if (arr[i] == a) {
+            flag_1 = 1;
+        }
+        if (arr[i] == b) {
+            flag_2 = 1;
+        }
+    }
+    if (!(flag_1 && flag_2)) {
+        c = 0;
+    }
+    printf("%d", c);
+}</pre></div><div class='question'>Given an array, WAP prints the next greater element (NGE) for every element. The next greater element for an element x is the first greater element on the right side of x in the array. For elements for which no greater element exists, consider the next greater element as -1.</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+
+void main() {
+    int n;
+    printf("Enter the length of array: ");
+    scanf("%d", &n);
+    printf("Enter the elements of array: ");
+    int arr[n];
+    for (int i = 0;i&lt;n;i++) {
+        scanf("%d", &arr[i]);
+    }
+    printf("Element\tNGE\n");
+    for (int i = 0;i&lt;n;i++) {
+        int flag = 1;
+        for (int j = i+1;j&lt;n;j++) {
+            if (arr[i]&lt;arr[j]) {
+                printf("%d\t%d\n", arr[i], arr[j]);
+                flag = 0;
+                break;
+            }
+        }
+        if (flag) { 
+            printf("%d\t%d\n", arr[i], -1);
+        }
+    }
+}</pre></div><div class='question'>Given an unsorted array arr [] and two numbers x and y, find the minimum distance between x and y in arr[]. The array might also contain duplicates. You may assume that both x and y are different and present in the arr[].</div><div class='answer'><button>copy</button><pre>#include &lt;stdio.h&gt;
+#include &lt;limits.h&gt;
+
+void main() {
+    int n = 12, arr[] = {3,5,4,2,6,5,6,6,5,4,8,3}, x=3, y=6, c = INT_MAX;
+    for (int i = 0;i&lt;n;i++) {
+        if (arr[i] == x) {
+            int _c = 0;
+            for (int j = i+1;j&lt;n;j++) {
+                _c++;
+                if (arr[j] == y) {
+                    break;
+                }
+            }
+            if (_c&lt;c && _c!=0) {
+                c = _c;
+            }
+        } else if (arr[i] == y) {
+            int _c = 0;
+            for (int j = i+1; j &lt; n; j++) {
+                _c++;
+                if (arr[j] == x) {
+                    break;
+                }
+            }
+            if (_c&lt;c && _c!=0) {
+                c = _c;
+            }
+        }
+    }
+    printf("%d", c);
+}</pre></div>
+<script>
+    var btn = document.getElementsByTagName('button');
+    for (var i = 0;i<btn.length;i++) {
+        btn[i].addEventListener('click', function () {
+            navigator.clipboard.writeText(this.nextElementSibling.textContent);
+            alert('copied');
+        })
+    }
+</script>
+</body>
+</html>
