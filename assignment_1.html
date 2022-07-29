@@ -196,8 +196,7 @@ void main() {
             n.value = copyText;
             n.select();
             n.setSelectionRange(0, 99999);
-            document.execCommand('copy');
-            alert('copied' + this.nextElementSibling.textContent);
+            navigator.clipboard.writeText(n.value);
             n.remove();
         })
     }
