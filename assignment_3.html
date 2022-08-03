@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Assignment 3</title>
+    <style>
+        .question {
+            font-size: 24px;
+        }
+        .answer button {
+            padding: 5px;
+            width: 50px;
+            background-color: black;
+            color: aliceblue;
+            border: 2px solid aliceblue;
+            position: relative;
+            left: 95%;
+            top: 45px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .answer button:active {
+            background-color: cadetblue;
+            border-color: black;
+        }
+        pre {
+            background-color: black;
+            color: aliceblue;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+    
+	<div class=LinkedList.c>
+		<div class='question'>Creating, Traversing and Inserting in Linked List.
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct node {
+    int data;
+    struct node *next;
+} *NODE;
+
+void traverse(NODE start) {
+    if (start == NULL) {
+        return;
+    }
+    NODE ptr;
+    ptr = start;
+    while (ptr !=NULL) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;next;
+    }
+}
+
+NODE insert_after_data(int val, int item, NODE start) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("OVERFLOW");
+    } else {
+        new_node-&gt;data = val;
+        NODE ptr = start;
+        while (ptr-&gt;data!=item && ptr-&gt;next!=NULL) {
+            ptr = ptr-&gt;next;
+        }
+        if (ptr-&gt;data == item) {
+            new_node-&gt;next = ptr-&gt;next;
+            ptr-&gt;next = new_node;
+        } else {
+            printf("ELEMENT NOT FOUND");
+        }
+    }
+    return start;
+}
+
+NODE inserting_at_last_node(int val, NODE start) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    new_node-&gt;data = val;
+    new_node-&gt;next = NULL;
+    if (new_node == NULL) {
+        printf("OVERFLOW");
+    } else {
+        if (start == NULL) {
+            start = new_node;
+            return start;
+        } else {
+            NODE ptr = start;
+            while (ptr-&gt;next!=NULL) {
+                ptr = ptr-&gt;next;
+            }
+            ptr-&gt;next = new_node;
+        }
+    }
+    return start;
+}
+
+NODE insert_at_pos(int val, int pos, NODE start) {
+    int i = 0;
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    new_node-&gt;data = val;
+    new_node-&gt;next = NULL;
+    if (new_node == NULL) {
+        printf("OVERFLOW");
+    } else {
+        if (start == NULL) {
+            if (pos == 0) {
+                start = new_node;
+            }
+        } else if (pos == 0) {
+            new_node-&gt;next = start;
+            start = new_node;
+        } else {
+            NODE ptr = start;
+            while (i&lt;pos-1 && ptr-&gt;next!=NULL) {
+                ptr = ptr-&gt;next;
+                i++;
+            }
+            if (pos-1 == i) {
+                new_node-&gt;next = ptr-&gt;next;
+                ptr-&gt;next = new_node;
+            } else {
+                printf("Index out of range");
+            }
+        }
+    }
+    return start;
+}
+
+int search(int val, NODE start) {
+    int i = 0;
+    if (start == NULL) {
+        return -2;
+    }
+    NODE ptr = start;
+    while (ptr-&gt;data!=val && ptr-&gt;next!=NULL) {
+        ptr = ptr-&gt;next;
+        i++;
+    }
+    if (ptr-&gt;data == val) {
+        printf("Element found at position %d", i);
+        return i;
+    } else {
+        return -1;
+    }
+}
+
+int length(NODE start) {
+    int i = 0;
+    if (start == NULL) {
+        
+    } else  {
+        NODE ptr = start;
+        while (ptr-&gt;next!=NULL) {
+            i++;
+            ptr = ptr-&gt;next;
+        }
+    }
+    return i;
+}
+
+NODE create(NODE start) {
+    NODE new_node;
+    int x;
+    printf("enter the data\n-1 to exit\nyour input: ");
+    scanf("%d", &x);
+    do {
+        new_node = (NODE)malloc(sizeof(struct node));
+        new_node-&gt;data = x;
+        if (start == NULL) {
+            start = new_node;
+            new_node-&gt;next = NULL;
+        } else {
+            new_node-&gt;next = start;
+            start = new_node;
+        }
+        printf("-1 to exit\nenter the data\nyour input: ");
+        scanf("%d", &x);
+    } while (x!=-1);
+    return start;
+}
+
+int main() {
+    NODE ll = NULL;
+    ll = create(ll);
+    while (1) {
+        int z;
+        printf("\n\n\npress 1 to insert element at last node\npress 2 to insert element at a given position\npress 3 to insert element after a data\npress 4 to transverse through all the elements \
+        \npress 5 to search for an element\npress 6 to get the length of the list\nany other key to exit\nyour input: ");
+        int val;
+        scanf("%d", &z);
+        printf("\n\n");
+        if (z == 1) {
+            // INSERT ELEMENT AT THE END
+            printf("Enter the element to insert at last: ");
+            scanf("%d", &val);
+            ll = inserting_at_last_node(val, ll);
+        } else if (z == 2) {
+            // INSERT ELEMENT AT THE GIVEN POSITION
+            int pos;
+            printf("Enter the position to insert the element: ");
+            scanf("%d", &pos);
+            printf("Enter the element to insert: ");
+            scanf("%d", &val);
+            ll = insert_at_pos(val, pos, ll);
+        } else if (z == 3) {
+            // INSERT ELEMENT AFTER THE GIVEN DATA
+            int data;
+            printf("Enter the data after which element should be inserted: ");
+            scanf("%d", &data);
+            printf("Enter the element to insert: ");
+            scanf("%d", &val);
+            ll = insert_after_data(val, data, ll);
+        } else if (z == 4) {
+            // TRAVERSING THROUGH THE LIST
+            traverse(ll);
+        } else if (z == 5) {
+            // SEARCH AN ELEMENT
+            printf("Enter the element to search for: ");
+            scanf("%d", &val);
+            int i = search(val, ll);
+            if (i == -2) {
+                printf("UNDERFLOW");
+            } else if (i == -1) {
+                printf("Element not found in the list");
+            } else {
+                printf("%d found at %d position", val, i);
+            }
+        } else if (z == 6) {
+            // LENGTH OF THE LIST
+            int l = length(ll);
+            printf("List contains %d elements", l);
+        } else if (z&lt;1 || z&gt;6){
+            // EXIT
+            break;
+        }
+    }
+    printf("Exit...");
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+<script>
+    var btn = document.getElementsByTagName('button');
+    for (var i = 0;i<btn.length;i++) {
+        btn[i].addEventListener('click', function () {
+            var copyText = this.nextElementSibling.textContent;
+            var n = document.createElement('input');
+            n.value = copyText;
+            n.select();
+            n.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(n.value);
+            n.remove();
+        })
+    }
+</script>
+</body>
+</html>
