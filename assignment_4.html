@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>DSA Assignment 4</title>
+    <style>
+        .question {
+            font-size: 24px;
+        }
+        .answer button {
+            padding: 5px;
+            width: 50px;
+            background-color: black;
+            color: aliceblue;
+            border: 2px solid aliceblue;
+            position: relative;
+            left: 95%;
+            top: 45px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .answer button:active {
+            background-color: cadetblue;
+            border-color: black;
+        }
+        pre {
+            background-color: black;
+            color: aliceblue;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+    
+	<div class=Double_Lined_List.c>
+		<div class='question'>Inserting, Deleting, Traversing in Double Linked List
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct node {
+    int data;
+    struct node *lptr;
+    struct node *rptr;
+} *NODE;
+
+NODE insert_at_first(NODE start, int val) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("OVERFLOW");
+        return start;
+    }
+    new_node-&gt;data = val;
+    if (start == NULL) {
+        start = new_node;
+        start-&gt;lptr = NULL;
+        start-&gt;rptr = NULL;
+    } else {
+        new_node-&gt;rptr = start;
+        new_node-&gt;lptr = NULL;
+        start-&gt;lptr = new_node;
+        start = new_node;
+    }
+}
+
+NODE insert_at_last(NODE start, int val) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("OVERFLOW");
+        return start;
+    }
+    new_node-&gt;data = val;
+    NODE ptr = start;
+    while (ptr-&gt;rptr!=NULL) {
+        ptr = ptr-&gt;rptr;
+    }
+    new_node-&gt;rptr = NULL;
+    new_node-&gt;lptr = ptr;
+    ptr-&gt;rptr = new_node;
+    return start;
+}
+
+NODE insert_at_given_pos(NODE start, int val, int pos) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("OVERFLOW");
+        return start;
+    }
+    new_node-&gt;data = val;
+    if (start == NULL || pos == 1) {
+        new_node-&gt;lptr = NULL;
+        new_node-&gt;rptr = start;
+        start = new_node;
+    } else {
+        NODE ptr = start;
+        int c = 0;
+        while (c&lt;pos-1) {
+            c++;
+            ptr = ptr-&gt;rptr;
+            if (ptr == NULL) {
+                printf("Index Out of Range\n\n");
+                return start;
+            }
+        }
+        if (ptr!=NULL) {
+            new_node-&gt;lptr = ptr-&gt;lptr;
+            new_node-&gt;rptr = ptr;
+            ptr-&gt;lptr-&gt;rptr = new_node;
+            ptr-&gt;lptr = new_node;
+        }
+        return start;
+    }
+}
+
+NODE delete_first(NODE start) {
+    if (start == NULL) {
+        printf("UNDERFLOW\n\n");
+        return start;
+    }
+    NODE ptr = start;
+    start = start-&gt;rptr;
+    if (start != NULL) {
+        start-&gt;lptr = NULL;
+        ptr-&gt;rptr = NULL;
+    }
+    free(ptr);
+    return start;
+}
+
+NODE delete_last(NODE start) {
+    if (start == NULL) {
+        printf("UNDERFLOW\n\n");
+        return start;
+    }
+    NODE ptr = start;
+    if (start-&gt;rptr == NULL) {
+        start = NULL;
+    } else {
+        while (ptr-&gt;rptr != NULL) {
+            ptr = ptr-&gt;rptr;
+        }
+        ptr-&gt;lptr-&gt;rptr = NULL;
+        ptr-&gt;lptr = NULL;
+        free(ptr);
+    }
+    return start;
+}
+
+void traverse(NODE start) {
+    if (start == NULL) {
+        printf("UNDERFLOW\n");
+        return;
+    }
+    NODE ptr = start;
+    while (ptr!=NULL) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;rptr;
+    }
+    printf("\n");
+}
+
+int main() {
+    NODE start = NULL;
+    while(1) {
+        int z;
+        printf("1 for inserting at the beginning\n2 for inserting at the last\n3 for insert at the given position\n4for deleting first node\n5for deleting last node\n6 for displaying the list\n7 to exit\nyour input: ");
+        scanf("%d", &z);
+        if (z == 1) {
+            int val;
+            printf("Enter the value to add at first: ");
+            scanf("%d", &val);
+            start = insert_at_first(start, val);
+        } else if (z == 2) {
+            int val;
+            printf("Enter the value to add at last: ");
+            scanf("%d", &val);
+            start = insert_at_last(start, val);
+        } else if (z == 3) {
+            int val, pos;
+            printf("Enter the position and value respectively: ");
+            scanf("%d%d", &pos, &val);
+            start = insert_at_given_pos(srart, val, pos);
+        } else if (z == 4) {
+            start = delete_first(start);
+        } else if (z == 5) {
+            start = delete_last(start);
+        } else if (z == 6) {
+            traverse(start);
+        } else if (z == 7) {
+            break;
+        }
+    }
+    printf("\n\n\n\n\nExit...");
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+<script>
+    var btn = document.getElementsByTagName('button');
+    for (var i = 0;i<btn.length;i++) {
+        btn[i].addEventListener('click', function () {
+            var copyText = this.nextElementSibling.textContent;
+            var n = document.createElement('input');
+            n.value = copyText;
+            n.select();
+            n.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(n.value);
+            n.remove();
+        })
+    }
+</script>
+</body>
+</html>
