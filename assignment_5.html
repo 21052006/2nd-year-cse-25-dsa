@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>assignment_5</title>
+    <style>
+        .question {
+            font-size: 24px;
+        }
+        .answer button {
+            padding: 5px;
+            width: 50px;
+            background-color: black;
+            color: aliceblue;
+            border: 2px solid aliceblue;
+            position: relative;
+            left: 95%;
+            top: 45px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .answer button:active {
+            background-color: cadetblue;
+            border-color: black;
+        }
+        pre {
+            background-color: black;
+            color: aliceblue;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+    
+	<div class=polynomials.c>
+		<div class='question'>creating polynomials and adding two polynomials
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct polynomial {
+    int coef, exp;
+    struct polynomial *link;
+} *term;
+
+term insert(term poly, int coef, int exp) {
+    term new_node = (term)malloc(sizeof(struct polynomial));
+    if (new_node == NULL) {
+        printf("\nOut of memory space\n");
+        return poly;
+    }
+    new_node-&gt;exp = exp;
+    new_node-&gt;coef = coef;
+    new_node-&gt;link = NULL;
+    if (poly == NULL) {
+        poly = new_node;
+    } else {
+        term temp = poly;
+        while (temp-&gt;link!=NULL) {
+            temp = temp-&gt;link;
+        }
+        if (temp-&gt;exp &gt; exp)
+            temp-&gt;link = new_node;
+        else
+            printf("\nInvalid exponent\n");
+    }
+    return poly;
+}
+
+void display(term poly) {
+    term temp = poly;
+    if (temp == NULL) {
+        printf("NULL\n");
+        return;
+    }
+    printf("%dx^%d", temp-&gt;coef, temp-&gt;exp);
+    temp = temp-&gt;link;
+    while (temp!=NULL && temp-&gt;link!=NULL) {
+        if (temp-&gt;coef&gt;0)
+            printf(" + %dx^%d", temp-&gt;coef, temp-&gt;exp);
+        else
+            printf(" - %dx^%d", (temp-&gt;coef)*(-1), temp-&gt;exp);
+        temp = temp-&gt;link;
+    }
+    if (temp!=NULL) {
+        if (temp-&gt;coef&gt;0)
+            printf(" + %dx^%d\n", temp-&gt;coef, temp-&gt;exp);
+        else
+            printf(" - %dx^%d\n", (temp-&gt;coef)*(-1), temp-&gt;exp);
+    } else {
+        printf("\n");
+    }
+}
+
+term add(term poly1, term poly2) {
+    term poly_1 = poly1, poly_2 = poly2, sum = NULL;
+    while (poly_1!=NULL && poly_2!=NULL) {
+        if (poly_1-&gt;exp&gt;poly_2-&gt;exp) {
+            sum = insert(sum, poly_1-&gt;coef, poly_1-&gt;exp);
+            poly_1 = poly_1-&gt;link;
+        } else if (poly_1-&gt;exp&lt;poly_2-&gt;exp) {
+            sum = insert(sum, poly_2-&gt;coef, poly_2-&gt;exp);
+            poly_2 = poly_2-&gt;link;
+        } else if (poly_1-&gt;exp == poly_2-&gt;exp) {
+            if (poly_1-&gt;coef + poly_2-&gt;coef != 0)
+                sum = insert(sum, poly_2-&gt;coef+poly_1-&gt;coef, poly_2-&gt;exp);
+            poly_2 = poly_2-&gt;link;
+            poly_1 = poly_1-&gt;link;
+        }
+    }
+    while (poly_1!=NULL) {
+        sum = insert(sum, poly_1-&gt;coef, poly_1-&gt;exp);
+        poly_1 = poly_1-&gt;link;
+    }
+    while (poly_2!=NULL) {
+        sum = insert(sum, poly_2-&gt;coef, poly_2-&gt;exp);
+        poly_2 = poly_2-&gt;link;
+    }
+    return sum;
+}
+
+int main() {
+    term poly1 = NULL, poly2 = NULL, poly3 = NULL;
+    while (1) {
+        int z;
+        printf("\nFirst Polynomial\nIf you want to add another term press 1 else any other key\n");
+        scanf("%d", &z);
+        if (z == 1) {
+            int coef, exp;
+            printf("Enter the coef and exp for the polynomial: ");
+            scanf("%d%d", &coef, &exp);
+            if (exp&lt;0) {
+                break;
+            }
+            poly1 = insert(poly1, coef, exp);
+            if (exp == 0)
+                break;
+        } else {
+            break;
+        }
+    }
+    while (1) {
+        int z;
+        printf("\nSecond Polynomial\nIf you want to add another term press 1 else any other key\n");
+        scanf("%d", &z);
+        if (z == 1) {
+            int coef, exp;
+            printf("Enter the coef and exp for the polynomial: ");
+            scanf("%d%d", &coef, &exp);
+            if (exp&lt;0) {
+                break;
+            }
+            poly2 = insert(poly2, coef, exp);
+            if (exp == 0)
+                break;
+        } else {
+            break;
+        }
+    }
+    printf("First polynomial: ");
+    display(poly1);
+    printf("Second polynomial: ");
+    display(poly2);
+    poly3 = add(poly1, poly2);
+    printf("Sum of first polynomial and second polynomial is ");
+    display(poly3);
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+<script>
+    var btn = document.getElementsByTagName('button');
+    for (var i = 0;i<btn.length;i++) {
+        btn[i].addEventListener('click', function () {
+            var copyText = this.nextElementSibling.textContent;
+            var n = document.createElement('input');
+            n.value = copyText;
+            n.select();
+            n.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(n.value);
+            n.remove();
+        })
+    }
+</script>
+</body>
+</html>
