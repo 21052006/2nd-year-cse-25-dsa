@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>DSA Assignment 4</title>
+    <title>assignment_4</title>
     <style>
         .question {
             font-size: 24px;
@@ -31,8 +31,8 @@
 </head>
 <body>
     
-	<div class=Double_Lined_List.c>
-		<div class='question'>Inserting, Deleting, Traversing in Double Linked List
+	<div class=Double_Circluar_Linked_List.c>
+		<div class='question'>Inserting, Deleting, Traversing in Double Circular Linked List
 		</div>
 		<div class='answer'>
 			<button>copy</button>
@@ -41,130 +41,135 @@
 
 typedef struct node {
     int data;
-    struct node *lptr;
-    struct node *rptr;
+    struct node *rptr, *lptr;
 } *NODE;
 
 NODE insert_at_first(NODE start, int val) {
     NODE new_node = (NODE)malloc(sizeof(struct node));
     if (new_node == NULL) {
-        printf("OVERFLOW");
+        printf("\nOut of Memory Space\n");
         return start;
     }
     new_node-&gt;data = val;
     if (start == NULL) {
         start = new_node;
-        start-&gt;lptr = NULL;
-        start-&gt;rptr = NULL;
+        start-&gt;lptr = start-&gt;rptr = start;
     } else {
+        new_node-&gt;lptr = start-&gt;lptr;
         new_node-&gt;rptr = start;
-        new_node-&gt;lptr = NULL;
-        start-&gt;lptr = new_node;
+        start-&gt;lptr-&gt;rptr = start-&gt;lptr = new_node;
         start = new_node;
     }
+    return start;
 }
 
 NODE insert_at_last(NODE start, int val) {
     NODE new_node = (NODE)malloc(sizeof(struct node));
     if (new_node == NULL) {
-        printf("OVERFLOW");
+        printf("\nOut of Memory Space\n");
         return start;
     }
     new_node-&gt;data = val;
-    NODE ptr = start;
-    while (ptr-&gt;rptr!=NULL) {
-        ptr = ptr-&gt;rptr;
-    }
-    new_node-&gt;rptr = NULL;
-    new_node-&gt;lptr = ptr;
-    ptr-&gt;rptr = new_node;
-    return start;
-}
-
-NODE insert_at_given_pos(NODE start, int val, int pos) {
-    NODE new_node = (NODE)malloc(sizeof(struct node));
-    if (new_node == NULL) {
-        printf("OVERFLOW");
-        return start;
-    }
-    new_node-&gt;data = val;
-    if (start == NULL || pos == 1) {
-        new_node-&gt;lptr = NULL;
-        new_node-&gt;rptr = start;
+    if (start == NULL) {
         start = new_node;
+        start-&gt;lptr = start-&gt;rptr = start;
     } else {
-        NODE ptr = start;
-        int c = 0;
-        while (c&lt;pos-1) {
-            c++;
-            ptr = ptr-&gt;rptr;
-            if (ptr == NULL) {
-                printf("Index Out of Range\n\n");
-                return start;
-            }
-        }
-        if (ptr!=NULL) {
-            new_node-&gt;lptr = ptr-&gt;lptr;
-            new_node-&gt;rptr = ptr;
-            ptr-&gt;lptr-&gt;rptr = new_node;
-            ptr-&gt;lptr = new_node;
-        }
-        return start;
+        new_node-&gt;rptr = start;
+        new_node-&gt;lptr = start-&gt;lptr;
+        start-&gt;lptr-&gt;rptr = new_node;
+        start-&gt;lptr = new_node;
     }
+    return start;
 }
 
 NODE delete_first(NODE start) {
-    if (start == NULL) {
-        printf("UNDERFLOW\n\n");
-        return start;
-    }
-    NODE ptr = start;
-    start = start-&gt;rptr;
-    if (start != NULL) {
-        start-&gt;lptr = NULL;
-        ptr-&gt;rptr = NULL;
-    }
-    free(ptr);
-    return start;
-}
-
-NODE delete_last(NODE start) {
-    if (start == NULL) {
-        printf("UNDERFLOW\n\n");
-        return start;
-    }
-    NODE ptr = start;
-    if (start-&gt;rptr == NULL) {
+    if (start==NULL) {
+        printf("\nEmpty List\n");
+    } else if (start-&gt;lptr == start) {
         start = NULL;
-    } else {
-        while (ptr-&gt;rptr != NULL) {
-            ptr = ptr-&gt;rptr;
-        }
-        ptr-&gt;lptr-&gt;rptr = NULL;
-        ptr-&gt;lptr = NULL;
+    } else  {
+        NODE ptr = start;
+        start = start-&gt;rptr;
+        start-&gt;lptr = ptr-&gt;lptr;
+        ptr-&gt;lptr-&gt;rptr = start;
         free(ptr);
     }
     return start;
 }
 
-void traverse(NODE start) {
-    if (start == NULL) {
-        printf("UNDERFLOW\n");
-        return;
+NODE delete_last(NODE start) {
+    if (start==NULL) {
+        printf("\nEmpty List\n");
+    } else if (start-&gt;lptr == start) {
+        start = NULL;
+    } else  {
+        NODE ptr = start-&gt;lptr-&gt;lptr, last = start-&gt;lptr;
+        ptr-&gt;rptr = start;
+        start-&gt;lptr = ptr;
+        free(last);
     }
+    return start;
+}
+
+void traverse_forward(NODE start) {
     NODE ptr = start;
-    while (ptr!=NULL) {
+    while (ptr-&gt;rptr!=start) {
         printf("%d ", ptr-&gt;data);
         ptr = ptr-&gt;rptr;
     }
-    printf("\n");
+    printf("%d\n", ptr-&gt;data);
+}
+
+void traverse_backward(NODE start) {
+    NODE ptr = start-&gt;lptr;
+    while (ptr-&gt;lptr!=start-&gt;lptr) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;lptr;
+    }
+    printf("%d\n", ptr-&gt;data);
+}
+
+NODE insert_after_given_pos(NODE start, int val, int pos) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("\nOut of Memory Space\n");
+        return start;
+    }
+    new_node-&gt;data = val;
+    if (start == NULL) {
+        if (pos == 1) {
+            start = new_node;
+            start-&gt;lptr = start-&gt;rptr = start;
+        } else {
+            printf("\nIndex out of range\n");
+            return start;
+        }
+    } else {
+        NODE ptr = start;
+        int i = 0;
+        while (ptr-&gt;rptr!=start && i&lt;pos) {
+            ptr = ptr-&gt;rptr;
+            i++;
+        }
+        if ((ptr-&gt;rptr!=start) || (ptr-&gt;rptr == start && i == pos) || (i+1 == pos)) {
+            if (i+1 == pos)
+                ptr = ptr-&gt;rptr;
+            new_node-&gt;rptr = ptr;
+            new_node-&gt;lptr = ptr-&gt;lptr;
+            ptr-&gt;lptr-&gt;rptr = new_node;
+            ptr-&gt;lptr = new_node;
+        } else {
+            printf("\nIndex out of range\n");
+        }
+    }
+    return start;
 }
 
 int main() {
     NODE start = NULL;
+    printf("1 for inserting at the beginning\n2 for inserting at the last\n3 for insert after the given position\n4 for deleting first node\n5 for deleting last node\n6 for traversing forward\n7 for traversing backward\n8 to exit\nyour input: ");
     while(1) {
         int z;
-        printf("1 for inserting at the beginning\n2 for inserting at the last\n3 for insert at the given position\n4for deleting first node\n5for deleting last node\n6 for displaying the list\n7 to exit\nyour input: ");
         scanf("%d", &z);
         if (z == 1) {
             int val;
@@ -180,7 +185,174 @@ int main() {
             int val, pos;
             printf("Enter the position and value respectively: ");
             scanf("%d%d", &pos, &val);
-            start = insert_at_given_pos(srart, val, pos);
+            start = insert_after_given_pos(start, val, pos);
+        } else if (z == 4) {
+            start = delete_first(start);
+        } else if (z == 5) {
+            start = delete_last(start);
+        } else if (z == 6) {
+            traverse_forward(start);
+        } else if (z == 7) {
+            traverse_backward(start);
+        } else if (z == 8) {
+            break;
+        }
+    }
+    printf("\n\n\n\n\nExit...\n");
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+	<div class=single_circular_linked_list.c>
+		<div class='question'>Inserting, Deleting, Traversing in Single Circular Linked List
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+typedef struct node {
+    int data;
+    struct node *next;
+} *NODE;
+
+NODE insert_at_first(NODE start, int val) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("\nOut of Memory Space\n");
+        return start;
+    } 
+    new_node-&gt;data = val;
+    if (start == NULL) {
+        start = new_node;
+        new_node-&gt;next = start;
+    } else {
+        NODE ptr = start;
+        while (ptr-&gt;next!=start) {
+            ptr = ptr-&gt;next;
+        }
+        new_node-&gt;next = start;
+        start = new_node;
+        ptr-&gt;next = start;
+    }
+    return start;
+}
+
+NODE insert_at_last(NODE start, int val) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    new_node-&gt;data = val;
+    new_node-&gt;next = start;
+    NODE ptr = start;
+    if (start == NULL) {
+        start = new_node;
+        new_node-&gt;next = start;
+    } else {
+        while (ptr-&gt;next!=start) {
+            ptr = ptr-&gt;next;
+        }
+        ptr-&gt;next = new_node;
+    }
+    return start;
+}
+
+NODE insert_after_given_pos(NODE start, int val, int pos) {
+    pos++;
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    new_node-&gt;data = val;
+    if (new_node == NULL) {
+        printf("Out of space");
+    }
+    if (start == NULL && pos-1 == 1) {
+        start = new_node;
+        new_node-&gt;next = start;
+    } else if (pos == 1) {
+        NODE ptr = start;
+        while (ptr-&gt;next!=start) {
+            ptr = ptr-&gt;next;
+        }
+        new_node-&gt;next = start;
+        start = new_node;
+        ptr-&gt;next = start;
+    } else {
+        NODE ptr = start;
+        int i = 1;
+        while (i&lt;pos) {
+            ptr = ptr-&gt;next;
+            i++;
+            if (ptr == start) {
+                printf("Invalid position");
+                return start;
+            }
+        }
+        new_node-&gt;next = ptr-&gt;next;
+        ptr-&gt;next = new_node;
+    }
+    return start;
+}
+NODE delete_first(NODE start) {
+    if (start-&gt;next == start) {
+        start = NULL;
+        return start;
+    }
+    NODE ptr = start;
+    while (ptr-&gt;next!=start) {
+        ptr = ptr-&gt;next;
+    }
+    start = start-&gt;next;
+    ptr-&gt;next = start;
+    return start;
+}
+
+NODE delete_last(NODE start) {
+    if (start-&gt;next == start) {
+        start = NULL;
+        return start;
+    }
+    NODE ptr = start;
+    while (ptr-&gt;next-&gt;next!=start) {
+        ptr = ptr-&gt;next;
+    }
+    ptr-&gt;next= start;
+    return start;
+}
+
+void traverse(NODE start) {
+    NODE ptr = start;
+    if (ptr == NULL) {
+        printf("UNDERFLOW\n");
+        return;
+    } else if (ptr-&gt;next == start) {
+        printf("%d\n", ptr-&gt;data);
+        return;
+    }
+    while (ptr-&gt;next!=start) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;next;
+    }
+    printf("%d\n", ptr-&gt;data);
+}
+
+int main() {
+    NODE start = NULL;
+    printf("1 for inserting at the beginning\n2 for inserting at the last\n3 for insert at the given position\n4for deleting first node\n5for deleting last node\n6 for displaying the list\n7 to exit\nyour input: ");
+    while(1) {
+        int z;
+        scanf("%d", &z);
+        if (z == 1) {
+            int val;
+            printf("Enter the value to add at first: ");
+            scanf("%d", &val);
+            start = insert_at_first(start, val);
+        } else if (z == 2) {
+            int val;
+            printf("Enter the value to add at last: ");
+            scanf("%d", &val);
+            start = insert_at_last(start, val);
+        } else if (z == 3) {
+            int val, pos;
+            printf("Enter the position and value respectively: ");
+            scanf("%d%d", &pos, &val);
+            start = insert_after_given_pos(start, val, pos);
         } else if (z == 4) {
             start = delete_first(start);
         } else if (z == 5) {
