@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>assignment_6</title>
+    <style>
+        .question {
+            font-size: 24px;
+        }
+        .answer button {
+            padding: 5px;
+            width: 50px;
+            background-color: black;
+            color: aliceblue;
+            border: 2px solid aliceblue;
+            position: relative;
+            left: 95%;
+            top: 45px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .answer button:active {
+            background-color: cadetblue;
+            border-color: black;
+        }
+        pre {
+            background-color: black;
+            color: aliceblue;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+    
+	<div class=stack.c>
+		<div class='question'>Menu driven program for all functions of stack with array and linked list
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct stack {
+    int data;
+    struct stack *top;
+} *STACK;
+
+STACK push_ll(STACK stack, int data) {
+    STACK new_node = (STACK)malloc(sizeof(struct stack));
+    if (new_node == NULL) {
+        printf("\nOverflow");
+        return stack;
+    }
+    new_node-&gt;data = data;
+    new_node-&gt;top = NULL;
+    if (stack == NULL) {
+        stack = new_node;
+    } else {
+        STACK ptr = stack;
+        while (ptr-&gt;top!=NULL) {
+            ptr = ptr-&gt;top;
+        }
+        ptr-&gt;top = new_node;
+    }
+    return stack;
+}
+
+STACK pop_ll(STACK stack) {
+    if (stack == NULL) {
+        printf("\nUnderflow");
+    } else if (stack-&gt;top == NULL) {
+        stack = NULL;
+    } else {
+        STACK ptr = stack;
+        while (ptr-&gt;top-&gt;top!=NULL) {
+            ptr = ptr-&gt;top;
+        }
+        ptr-&gt;top = NULL;
+    }
+    return stack;
+}
+
+void seek_ll(STACK stack) {
+    STACK ptr = stack;
+    if (stack == NULL) {
+        printf("\nUnderflow");
+    } else {
+        while (ptr-&gt;top!=NULL) {
+            ptr = ptr-&gt;top;
+        }
+        printf("Top: %d\n", ptr-&gt;data);
+    }
+}
+
+
+int push(int arr[], int element, int top, int size) {
+    if (top&lt;size-1) {
+        top++;
+        arr[top] = element;
+    } else {
+        printf("\nOVERFLOW %d\n", element);
+    }
+    return top;
+}
+
+int pop(int arr[], int top) {
+    if (top!=-1) {
+        printf("%d\n", arr[top]);
+        top--;
+    } else {
+        printf("\nUNDERFLOW\n");
+    }
+    return top;
+}
+
+void seek(int arr[], int top) {
+    if (top != -1)
+        printf("\ntop element: %d\n", arr[top]);
+    else 
+        printf("\nUnderflow\n");
+}
+
+int main() {
+    int z;
+    printf("To implement stack using array press 1\nTo implement stack using linked list press 2\nYour input: ");
+    scanf("%d", &z);
+    if (z == 1) {
+        int size;
+        printf("Enter the size of satck: ");
+        scanf("%d", &size);
+        int arr[size], top = -1;
+        while (1) {
+            printf("\nPress 1 to push element in stack");
+            printf("\nPress 2 to pop element in stack");
+            printf("\nPress 3 to see top element");
+            printf("\nYour input: ");
+            scanf("%d", &z);
+            if (z == 1) {
+                int element;
+                printf("Enter the element to push into the stack: ");
+                scanf("%d", &element);
+                top = push(arr, element, top, size);
+            } else if (z == 2) {
+                top = pop(arr, top);
+            } else if (z == 3) {
+                seek(arr, top);
+            } else {
+                break;
+            }
+        }
+    } else if (z == 2) {
+        STACK stack = NULL;
+        while (1) {
+            printf("\nPress 1 to push element in stack");
+            printf("\nPress 2 to pop element in stack");
+            printf("\nPress 3 to see top element");
+            printf("\nany other to exit");
+            printf("\nYour input: ");
+            scanf("%d", &z);
+            if (z == 1) {
+                int element;
+                printf("Enter the element to push into the stack: ");
+                scanf("%d", &element);
+                stack = push_ll(stack, element);
+            } else if (z == 2) {
+                stack = pop_ll(stack);
+            } else if (z == 3) {
+                seek_ll(stack);
+            } else {
+                break;
+            }
+        }
+    } else {
+        printf("\nInvalid input");
+    }
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+<script>
+    var btn = document.getElementsByTagName('button');
+    for (var i = 0;i<btn.length;i++) {
+        btn[i].addEventListener('click', function () {
+            var copyText = this.nextElementSibling.textContent;
+            var n = document.createElement('input');
+            n.value = copyText;
+            n.select();
+            n.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(n.value);
+            n.remove();
+        })
+    }
+</script>
+</body>
+</html>
