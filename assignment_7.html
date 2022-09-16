@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>assignment_7</title>
+    <style>
+        .question {
+            font-size: 24px;
+        }
+        .answer button {
+            padding: 5px;
+            width: 50px;
+            background-color: black;
+            color: aliceblue;
+            border: 2px solid aliceblue;
+            position: relative;
+            left: 95%;
+            top: 45px;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+        .answer button:active {
+            background-color: cadetblue;
+            border-color: black;
+        }
+        pre {
+            background-color: black;
+            color: aliceblue;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+    
+	<div class=Q1.c>
+		<div class='question'>
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>/*
+Check string is palindrome or not. String contains 'A' and 'B'. And 'X' in the middle of the string.
+*/
+#include &lt;stdio.h&gt;
+
+int main() {
+    char str[] = "aabaxabaa";
+    int c = 0, flag = 0;
+    while (1) {
+        if (str[c] == 'x')
+            break;
+        c++;
+    }
+    for (int i = 0;i&lt;=c;i++) {
+        if (str[c+i] != str[c-i]) {
+            flag = 1;
+            break;
+        }
+    }
+    if (flag == 1 ) {
+        printf("%s is not a palindrome\n", str);
+    } else {
+        printf("%s is a palindrome\n", str);
+    }
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+	<div class=Q2.c>
+		<div class='question'>
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>/*
+Find the Kth node from the end of the single linked list.
+*/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct node {
+    int data;
+    struct node *next;
+} *NODE;
+
+NODE insert(NODE start, int data) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("Overflow\n");
+        return start;
+    }
+    new_node-&gt;data = data;
+    if (start == NULL) {
+        start = new_node;
+        start-&gt;next = NULL;
+    } else {
+        new_node-&gt;next = start;
+        start = new_node;
+    }
+    return start;
+}
+
+void KthNode(NODE start, int Kth) {
+    NODE ptr = start;
+    int c = 0, i = 0;;
+    while (ptr!=NULL) {
+        c++;
+        ptr = ptr-&gt;next;
+    }
+    ptr = start;
+    while (i&lt;c-Kth) {
+        ptr = ptr-&gt;next;
+        i++;
+    }
+    printf("%d\n", ptr-&gt;data);
+}
+
+void display(NODE start) {
+    NODE ptr = start;
+    while (ptr!=NULL) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;next;
+    }
+    printf("\n");
+}
+
+int main() {
+    NODE start = NULL;
+    start = insert(start, 5);
+    start = insert(start, 4);
+    start = insert(start, 3);
+    start = insert(start, 2);
+    start = insert(start, 1);
+    KthNode(start, 2);
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+	<div class=Q3.c>
+		<div class='question'>
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>/*
+Find out if Linked list had a cycle or not
+Solution should take O(n) time complexity
+*/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct node {
+    int data;
+    struct node *next;
+} *NODE;
+
+NODE insert(NODE start, int data) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("Overflow\n");
+        return start;
+    }
+    new_node-&gt;data = data;
+    if (start == NULL) {
+        start = new_node;
+        start-&gt;next = NULL;
+    } else {
+        new_node-&gt;next = start;
+        start = new_node;
+    }
+    return start;
+}
+
+int loop(NODE start) {
+    NODE ptr_1 = start, ptr_2 = start;
+    while (ptr_1!=NULL && ptr_2!=NULL) {
+        ptr_1 = ptr_1-&gt;next;
+        ptr_2 = ptr_2-&gt;next;
+        if (ptr_2 == NULL) {
+            break;
+        } else {
+            ptr_2 = ptr_2-&gt;next;
+        }
+        if (ptr_1 == ptr_2)
+            return 1;
+    }
+    return 0;
+}
+
+void display(NODE start) {
+    NODE ptr = start;
+    int i = 0;
+    while (ptr!=NULL && i&lt;10) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;next;
+        i++;
+    }
+    printf("\n");
+}
+
+int main() {
+    NODE start = NULL;
+    start = insert(start, 5);
+    start = insert(start, 4);
+    start = insert(start, 3);
+    start = insert(start, 2);
+    start = insert(start, 1);
+    start-&gt;next-&gt;next-&gt;next-&gt;next-&gt;next = start-&gt;next-&gt;next;
+    display(start);
+    printf("%s\n", loop(start) == 1?"The given linked list is in loop":"The given linked list is not in loop");
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+	<div class=Q4.c>
+		<div class='question'>
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>/*
+Find out mid point of the single linked list
+Solution should take O(n) time complexity
+*/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct node {
+    int data;
+    struct node *next;
+} *NODE;
+
+NODE insert(NODE start, int data) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("Overflow\n");
+        return start;
+    }
+    new_node-&gt;data = data;
+    if (start == NULL) {
+        start = new_node;
+        start-&gt;next = NULL;
+    } else {
+        new_node-&gt;next = start;
+        start = new_node;
+    }
+    return start;
+}
+
+int mid(NODE start) {
+    NODE ptr_1 = start, ptr_2 = start;
+    while (ptr_1!=NULL && ptr_2!=NULL) {
+        ptr_2 = ptr_2-&gt;next;
+        if (ptr_2 == NULL) {
+            break;
+        } else {
+            ptr_2 = ptr_2-&gt;next;
+        }   
+        ptr_1 = ptr_1-&gt;next;
+    }
+    printf("Mid term is %d\n", ptr_1-&gt;data);
+}
+
+void display(NODE start) {
+    NODE ptr = start;
+    while (ptr!=NULL) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;next;
+    }
+    printf("\n");
+}
+
+int main() {
+    NODE start = NULL;
+    start = insert(start, 6);
+    start = insert(start, 5);
+    start = insert(start, 4);
+    start = insert(start, 3);
+    start = insert(start, 2);
+    start = insert(start, 1);
+    mid(start);
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+	<div class=Q5.c>
+		<div class='question'>
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>/*
+Two linked list are merging at a given point. Find out the point where they are merging.
+Solution should take O(n) time complexity.
+*/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct node {
+    int data;
+    struct node *next;
+} *NODE;
+
+NODE insert(NODE start, int data) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("Overflow\n");
+        return start;
+    }
+    new_node-&gt;data = data;
+    if (start == NULL) {
+        start = new_node;
+        start-&gt;next = NULL;
+    } else {
+        new_node-&gt;next = start;
+        start = new_node;
+    }
+    return start;
+}
+
+void find_merging(NODE start_1, NODE start_2) {
+    NODE ptr_1 = start_1, ptr_2 = start_2;
+    int c_1 = 0, c_2 = 0;
+    while (ptr_1!=NULL)  {
+        ptr_1 = ptr_1-&gt;next;
+        c_1++;
+    }
+    while (ptr_2!=NULL)  {
+        ptr_2 = ptr_2-&gt;next;
+        c_2++;
+    }
+    int d = c_1-c_2&gt;=0?c_1-c_2:(c_1-c_2)*-1;
+    ptr_2 = start_2;
+    ptr_1 = start_1;
+    printf("%d %d\n", c_1, c_2);
+    if (c_1&gt;c_2) {
+        int i = 0;
+        while (i&lt;d) {
+            i++;
+            ptr_1 = ptr_1-&gt;next;
+        }
+    } else if (c_1&lt;c_2) {
+        int i = 0;
+        while (i&lt;d) {
+            i++;
+            ptr_2 = ptr_2-&gt;next;
+        }
+    }
+    printf("ptr: %d %d\n", ptr_1-&gt;data, ptr_2-&gt;data);
+    while (ptr_1 != ptr_2 && ptr_1!=NULL && ptr_2!=NULL) {
+        ptr_1 = ptr_1-&gt;next;
+        ptr_2 = ptr_2-&gt;next;
+        if (ptr_1-&gt;next == ptr_2-&gt;next) {
+            break;
+        }
+    }
+    if (ptr_1-&gt;next != ptr_2-&gt;next) {
+        printf("Linklist are not merging\n");
+    } else {
+        printf("Linked List are merging at point where data is %d\n", ptr_1-&gt;next-&gt;data);
+    }
+}
+
+void display(NODE start) {
+    NODE ptr = start;
+    while (ptr!=NULL) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;next;
+    }
+    printf("\n");
+}
+
+int main() {
+    NODE start = NULL;
+    start = insert(start, 6);
+    start = insert(start, 5);
+    start = insert(start, 4);
+    start = insert(start, 3);
+    start = insert(start, 2);
+    start = insert(start, 1);
+    start = insert(start, 0);
+    start = insert(start, -1);
+    NODE start1 = NULL;
+    start1 = insert(start1, 7);
+    start1 = insert(start1, 6);
+    start1 = insert(start1, 5);
+    start1-&gt;next-&gt;next-&gt;next = start-&gt;next-&gt;next;
+    printf("LL1: ");
+    display(start);
+    printf("LL2: ");
+    display(start1);
+    find_merging(start, start1);
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+	<div class=Q6.c>
+		<div class='question'>
+		</div>
+		<div class='answer'>
+			<button>copy</button>
+			<pre>/*
+reverse a block of linked list
+*/
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+typedef struct node {
+    int data;
+    struct node *next;
+} *NODE;
+
+NODE insert(NODE start, int data) {
+    NODE new_node = (NODE)malloc(sizeof(struct node));
+    if (new_node == NULL) {
+        printf("Overflow\n");
+        return start;
+    }
+    new_node-&gt;data = data;
+    if (start == NULL) {
+        start = new_node;
+        start-&gt;next = NULL;
+    } else {
+        new_node-&gt;next = start;
+        start = new_node;
+    }
+    return start;
+}
+
+void display(NODE start) {
+    NODE ptr = start;
+    while (ptr!=NULL) {
+        printf("%d ", ptr-&gt;data);
+        ptr = ptr-&gt;next;
+    }
+    printf("\n");
+}
+
+NODE reverse_block(NODE start, int k) {
+    NODE cnt = start, next = NULL, last = NULL;
+    int i = 0;
+    // 1 2 3 4 5 6 7
+    // 3 2 1 4 5 6 7
+    i = 0;
+    while (i&lt;k) {
+        next = cnt-&gt;next;
+        cnt-&gt;next = last;
+        last = cnt;
+        cnt = next;
+        i++;
+    }
+    NODE n = last;
+    while (n-&gt;next!=NULL) {
+        n = n-&gt;next;
+    }
+    n-&gt;next = cnt;
+    return last;
+}
+
+int main() {
+    NODE start = NULL;
+    start = insert(start, 7);
+    start = insert(start, 6);
+    start = insert(start, 5);
+    start = insert(start, 4);
+    start = insert(start, 3);
+    start = insert(start, 2);
+    start = insert(start, 1);
+    start = reverse_block(start, 4);
+    display(start);
+    return 1;
+}
+			</pre>
+		</div>
+	</div>
+<script>
+    var btn = document.getElementsByTagName('button');
+    for (var i = 0;i<btn.length;i++) {
+        btn[i].addEventListener('click', function () {
+            var copyText = this.nextElementSibling.textContent;
+            var n = document.createElement('input');
+            n.value = copyText;
+            n.select();
+            n.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(n.value);
+            n.remove();
+        })
+    }
+</script>
+</body>
+</html>
